@@ -1,0 +1,54 @@
+{
+  "Aggregates": [
+    {
+      "UpstreamPathTemplate": "/api/usersPosts",    // Combine two endpoints the api/users and the api/posts
+      "RouteKeys": [ "users", "posts" ],
+      "aggregator": "UsersPostsAggregator"          // Different Aggregators can be built. Manually and add in Startup
+    }
+  ],
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/api/users",
+      "UpstreamHttpMethod": [],                     // Use intro array POST,PUT,GET
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "jsonplaceholder.typicode.com",   // URL fake
+          "Port": 443
+        }
+      ],
+      "DownstreamPathTemplate": "/users",
+      "Key": "users",
+      "AuthenticationOPtions": {                    // Security: Authentication with Web Token - 401 Unauthorized
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {                   // Type user admin or user
+        "userType": "whatever"                      // Valid if is user or admin - 403 Forbidden
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/posts",
+      "UpstreamHttpMethod": [],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "jsonplaceholder.typicode.com",
+          "Port": 443
+        }
+      ],
+      "DownstreamPathTemplate": "/posts",
+      "Key": "posts",
+      "RateLimitOPtions": {                         // Limit requests during the time that is established - Configure to prevent bot attacks or DOS attack requests
+        "ClientWhitelist": [],                      // The client or clients in this array will not be affected by the rate limiting
+        "EnableRateLimiting": true,
+        "Period": "3s",                             // Time in seconds 
+        "PeriodTimeSpan": 5,                        // If foul Waiting time to restart requests to endpoints
+        "Limit": 3                                  // Limit to make requests to endpoints - 429 Too Many request
+      },
+      "DelegatingHandlers": [
+        "BlackListHandler"                          // Class delegate
+      ]
+    }
+  ],
+  "globalConfiguration": {
+    "BaseUrl": "http://localhost:44367"
+  }
+}

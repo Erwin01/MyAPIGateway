@@ -1,0 +1,46 @@
+﻿
+
+Development API Gateway With Ocelot
+
+API gateway technology implemented in .NET Core and open source.
+
+- Install package nuget Ocelot in proyect
+
+- Create file example: ocelot.json in the proyect
+
+
+USE API FAKE
+
+JSONPlaceholder comes with a set of 6 common resources:
+
+/posts	100 posts
+/comments	500 comments
+/albums	100 albums
+/photos	5000 photos
+/todos	200 todos
+/users	10 users
+
+URL: https://jsonplaceholder.typicode.com/
+
+
+- Aggregate package nuget or install: 
+  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.5" />
+
+
+- In ocelot.json aggregate Authentiction API
+- To make running the DemoSecurity
+- Use Postman to check
+
+Example:
+
+"AuthenticationOPtions": {
+"AuthenticationProviderKey":  "Bearer"
+}
+
+
+- Filter in Header
+  MyHeader - 1 in Postman
+
+
+- URLS ENDPOINTS: https://localhost:44367/api/posts - https://localhost:44367/api/users
+- URL API TOKEN: https://localhost:44319/auth/token
